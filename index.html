@@ -128,6 +128,9 @@
       .carousel-btn { display: none; } /* hide on small touch devices */
     }
 
+    /* Video embeds */
+    .video-embed iframe { width:100%; aspect-ratio: 16 / 9; border:0; border-radius:12px; box-shadow: var(--shadow); }
+
     /* Two-column */
     .twocol { display:grid; gap:1.1rem; grid-template-columns: 1fr; }
     @media (min-width: 900px){ .twocol { grid-template-columns: 1.05fr .95fr; } }
@@ -256,6 +259,9 @@
           <li><strong>Guarantees & Fallbacks</strong> ensure at least 6 quality options (or a transparent error if web‑only is required).</li>
           <li><strong>Explore & Act</strong> with map, contact info, and detail pages; browse “Extraordinary People” with citations.</li>
         </ol>
+        <div class="video-embed" style="margin-top:1rem">
+          <iframe src="https://www.youtube.com/embed/JyaDYNln3sA" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
       </div>
       <div>
         <div class="card">
