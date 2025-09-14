@@ -86,6 +86,48 @@
     .screen figcaption { font-weight:700; color:var(--text); margin:.4rem .2rem 0; }
     .screen .caption { color:var(--text-light); margin:.1rem .2rem 0; font-size:.95rem }
 
+    /* Carousel */
+    .carousel {
+      position: relative;
+      margin-top: .5rem;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: .25rem .25rem .75rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    .carousel-track::-webkit-scrollbar { height: 8px; }
+    .carousel-track::-webkit-scrollbar-thumb { background: #ddd; border-radius: 999px; }
+    .carousel-track::-webkit-scrollbar-track { background: transparent; }
+    .carousel .screen {
+      flex: 0 0 260px;            /* card width */
+      scroll-snap-align: start;
+    }
+    @media (min-width: 540px){ .carousel .screen { flex-basis: 300px; } }
+    @media (min-width: 900px){ .carousel .screen { flex-basis: 340px; } }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      translate: 0 -50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-radius: 999px;
+      padding: .5rem .7rem;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+    }
+    .carousel-btn.prev { left: -6px; }
+    .carousel-btn.next { right: -6px; }
+    @media (hover: none) {
+      .carousel-btn { display: none; } /* hide on small touch devices */
+    }
+
     /* Two-column */
     .twocol { display:grid; gap:1.1rem; grid-template-columns: 1fr; }
     @media (min-width: 900px){ .twocol { grid-template-columns: 1.05fr .95fr; } }
@@ -241,32 +283,36 @@
       </div>
 
       <h3 style="margin-top:1rem">App Screens</h3>
-      <div class="screens-grid">
-        <figure class="screen">
-          <img src="assets/screens/intake-step1.png" alt="Parent & Priorities — Step 1 intake screen" />
-          <figcaption>Intake</figcaption>
-          <p class="caption">Parent & Priorities</p>
-        </figure>
-        <figure class="screen">
-          <img src="assets/screens/insights.png" alt="Insights & Analysis with development categories" />
-          <figcaption>Insights & Analysis</figcaption>
-          <p class="caption">Personalized plan</p>
-        </figure>
-        <figure class="screen">
-          <img src="assets/screens/map.png" alt="Activity Locations map view with categories" />
-          <figcaption>Map</figcaption>
-          <p class="caption">Activity Locations</p>
-        </figure>
-        <figure class="screen">
-          <img src="assets/screens/extraordinary-people.png" alt="Extraordinary People deep research view" />
-          <figcaption>Extraordinary People</figcaption>
-          <p class="caption">Deep Research</p>
-        </figure>
-        <figure class="screen">
-          <img src="assets/screens/ai-parenting-assistant.png" alt="AI Parenting Assistant chat landing" />
-          <figcaption>AI Assistant</figcaption>
-          <p class="caption">Quick help topics</p>
-        </figure>
+      <div class="carousel" id="screens-carousel">
+        <button class="carousel-btn prev" aria-label="Previous" data-dir="-1">‹</button>
+        <div class="carousel-track">
+          <figure class="screen">
+            <img src="assets/screens/intake-step1.png" alt="Parent & Priorities — Step 1 intake screen" />
+            <figcaption>Intake</figcaption>
+            <p class="caption">Parent & Priorities</p>
+          </figure>
+          <figure class="screen">
+            <img src="assets/screens/insights.png" alt="Insights & Analysis with development categories" />
+            <figcaption>Insights & Analysis</figcaption>
+            <p class="caption">Personalized plan</p>
+          </figure>
+          <figure class="screen">
+            <img src="assets/screens/map.png" alt="Activity Locations map view with categories" />
+            <figcaption>Map</figcaption>
+            <p class="caption">Activity Locations</p>
+          </figure>
+          <figure class="screen">
+            <img src="assets/screens/extraordinary-people.png" alt="Extraordinary People deep research view" />
+            <figcaption>Extraordinary People</figcaption>
+            <p class="caption">Deep Research</p>
+          </figure>
+          <figure class="screen">
+            <img src="assets/screens/ai-parenting-assistant.png" alt="AI Parenting Assistant chat landing" />
+            <figcaption>AI Assistant</figcaption>
+            <p class="caption">Quick help topics</p>
+          </figure>
+        </div>
+        <button class="carousel-btn next" aria-label="Next" data-dir="1">›</button>
       </div>
     </div>
   </section>
@@ -451,6 +497,22 @@ YELP_API_KEY=... # optional</pre>
         });
       });
     });
+
+    // Carousel controls
+    (function () {
+      const carousel = document.getElementById('screens-carousel');
+      if (!carousel) return;
+      const track = carousel.querySelector('.carousel-track');
+      const buttons = carousel.querySelectorAll('.carousel-btn');
+
+      const scrollStep = () => Math.min(track.clientWidth * 0.9, 420); // responsive step
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dir = Number(btn.dataset.dir || 1);
+          track.scrollBy({ left: dir * scrollStep(), behavior: 'smooth' });
+        });
+      });
+    })();
   </script>
 </body>
 </html>
